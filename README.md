@@ -7,7 +7,7 @@ Wiza is a decentralized platform that transforms education by combining on-chain
 ## 🔗 Live Deployment
 
 - **Testnet dApp:** [https://wiza.vercel.app](https://wiza.vercel.app)
-- **Pitch Deck:** [View](https://wiza-.vercel.app/pitch-deck)
+- **Pitch Deck:** [View](https://wiza.vercel.app/pitch-deck)
 - **Technical Slides:** [View](https://wiza.vercel.app/docs)
 
 ---
