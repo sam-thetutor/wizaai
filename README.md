@@ -2,7 +2,7 @@
 
 Wiza is a decentralized platform that transforms education by combining on-chain credentials, borderless payments, and AI-powered learning. Built on the Kaia blockchain, it empowers learners and educators to earn, teach, and verify knowledge transparently across the Web3 ecosystem.
 
-![Wiza Logo](https://wiza.vercel.app/images/logo.png)
+![Wiza Logo](https://wiza.vercel.app/logo.png)
 
 ## 🔗 Live Deployment
 
