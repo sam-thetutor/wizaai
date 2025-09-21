@@ -1,0 +1,268 @@
+/* Import Cyber Theme */
+@import './styles/cyber-theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientText {
+  0%,
+  100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Animation classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-gradient-text {
+  background: linear-gradient(-45deg, #a855f7, #3b82f6, #8b5cf6, #6366f1);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s ease infinite;
+}
+
+.animate-confetti {
+  animation: confetti linear infinite;
+}
+
+/* Delay classes */
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
+.delay-600 {
+  animation-delay: 0.6s;
+}
+.delay-700 {
+  animation-delay: 0.7s;
+}
+.delay-800 {
+  animation-delay: 0.8s;
+}
+.delay-1000 {
+  animation-delay: 1s;
+}
+.delay-1200 {
+  animation-delay: 1.2s;
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.rich_content {
+  line-height: 1.7;
+  color: #222;
+}
+
+.rich_content h1,
+.rich_content h2,
+.rich_content h3,
+.rich_content h4,
+.rich_content h5,
+.rich_content h6 {
+  font-weight: 600;
+  margin: 1.5em 0 0.5em;
+  line-height: 1.3;
+}
+
+.rich_content h1 {
+  font-size: 1.5em;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.3em;
+}
+
+.rich_content h2 {
+  font-size: 1.25em;
+  border-left: 2px solid #3182ce;
+  padding-left: 0.3em;
+}
+
+.rich_content h3 {
+  font-size: 1em;
+}
+
+.rich_content h4 {
+  font-size: 0.75em;
+}
+
+.rich_content h5 {
+  font-size: 0.6em;
+}
+
+.rich_content h6 {
+  font-size: 0.5em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rich_content p {
+  margin: 1em 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.rich_content ul,
+.rich_content ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+
+.rich_content ul li::marker {
+  color: #3182ce;
+}
+
+.rich_content ol li::marker {
+  font-weight: bold;
+  color: #2d3748;
+}
+
+.rich_content blockquote {
+  border-left: 4px solid #cbd5e0;
+  padding-left: 1em;
+  color: #555;
+  font-style: italic;
+  margin: 1em 0;
+  background: #f7fafc;
+}
+
+.rich_content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0;
+  border-radius: 0.5em;
+  display: block;
+}
+
+.rich_content pre,
+.rich_content code {
+  font-family: "Fira Code", monospace;
+  background-color: #f5f5f5;
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+.rich_content pre {
+  overflow: auto;
+  padding: 1em;
+  margin: 1.2em 0;
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.rich_content a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.rich_content hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 2em 0;
+}
+
+.rich_content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+
+.rich_content th,
+.rich_content td {
+  padding: 0.75em 1em;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.rich_content th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+}

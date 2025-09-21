@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaia Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+        .success-status { border-left-color: #10b981; background: #f0fdf4; }
+        .error-status { border-left-color: #ef4444; background: #fef2f2; }
+        .info-status { border-left-color: #3b82f6; background: #eff6ff; }
+        button {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #7c3aed; }
+        button:disabled { background: #9ca3af; cursor: not-allowed; }
+        .contract-info {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Liven - Kaia Connection Test</h1>
+        <p>Testing connection to Kaia Testnet and deployed contract</p>
+        
+        <div id="status"></div>
+        
+        <button onclick="testConnection()">Test Kaia Connection</button>
+        <button onclick="testContract()">Test Contract</button>
+        <button onclick="connectWallet()" id="connectBtn">Connect Wallet</button>
+        
+        <div class="contract-info">
+            <strong>Contract Details:</strong><br>
+            Network: Kaia Testnet (Chain ID: 1001)<br>
+            Contract: 0xa6837aFd9705117ED4327CBAd59D7ACE7cB071D3<br>
+            Explorer: <a href="https://kairos.kaiascope.com/account/0xa6837aFd9705117ED4327CBAd59D7ACE7cB071D3" target="_blank">View on Kaia Explorer</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+    <script>
+        const CONTRACT_ADDRESS = '0xa6837aFd9705117ED4327CBAd59D7ACE7cB071D3';
+        const KAIA_TESTNET_RPC = 'https://public-en-kairos.node.kaia.io';
+        const CHAIN_ID = 1001;
+        
+        const CONTRACT_ABI = [
+            "function name() view returns (string)",
+            "function symbol() view returns (string)",
+            "function owner() view returns (address)",
+            "function certIdCounter() view returns (uint256)"
+        ];
+
+        function addStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            const statusClass = type === 'success' ? 'success-status' : 
+                               type === 'error' ? 'error-status' : 'info-status';
+            statusDiv.innerHTML += `<div class="status ${statusClass}">${message}</div>`;
+            statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+
+        async function testConnection() {
+            addStatus('🔗 Testing connection to Kaia Testnet...', 'info');
+            
+            try {
+                const provider = new ethers.JsonRpcProvider(KAIA_TESTNET_RPC);
+                const network = await provider.getNetwork();
+                
+                addStatus(`✅ Connected to network: ${network.name} (Chain ID: ${network.chainId})`, 'success');
+                
+                const blockNumber = await provider.getBlockNumber();
+                addStatus(`📦 Current block: ${blockNumber}`, 'success');
+                
+                return provider;
+            } catch (error) {
+                addStatus(`❌ Connection failed: ${error.message}`, 'error');
+                return null;
+            }
+        }
+
+        async function testContract() {
+            addStatus('🔍 Testing contract interaction...', 'info');
+            
+            try {
+                const provider = new ethers.JsonRpcProvider(KAIA_TESTNET_RPC);
+                const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+                
+                const name = await contract.name();
+                const symbol = await contract.symbol();
+                const owner = await contract.owner();
+                const certCounter = await contract.certIdCounter();
+                
+                addStatus(`✅ Contract Name: ${name}`, 'success');
+                addStatus(`✅ Contract Symbol: ${symbol}`, 'success');
+                addStatus(`✅ Contract Owner: ${owner}`, 'success');
+                addStatus(`✅ Certificate Counter: ${certCounter}`, 'success');
+                
+            } catch (error) {
+                addStatus(`❌ Contract test failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function connectWallet() {
+            if (!window.ethereum) {
+                addStatus('❌ No wallet detected. Please install MetaMask or another Web3 wallet.', 'error');
+                return;
+            }
+
+            try {
+                addStatus('🔗 Connecting to wallet...', 'info');
+                
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                
+                if (accounts.length > 0) {
+                    addStatus(`✅ Connected: ${accounts[0]}`, 'success');
+                    
+                    // Check if on correct network
+                    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                    const currentChainId = parseInt(chainId, 16);
+                    
+                    if (currentChainId !== CHAIN_ID) {
+                        addStatus(`⚠️ Wrong network. Current: ${currentChainId}, Expected: ${CHAIN_ID}`, 'error');
+                        
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: `0x${CHAIN_ID.toString(16)}` }]
+                            });
+                            addStatus('✅ Switched to Kaia Testnet', 'success');
+                        } catch (switchError) {
+                            if (switchError.code === 4902) {
+                                // Network not added, add it
+                                try {
+                                    await window.ethereum.request({
+                                        method: 'wallet_addEthereumChain',
+                                        params: [{
+                                            chainId: `0x${CHAIN_ID.toString(16)}`,
+                                            chainName: 'Kaia Testnet',
+                                            nativeCurrency: {
+                                                name: 'KAIA',
+                                                symbol: 'KAIA',
+                                                decimals: 18
+                                            },
+                                            rpcUrls: [KAIA_TESTNET_RPC],
+                                            blockExplorerUrls: ['https://kairos.kaiascope.com']
+                                        }]
+                                    });
+                                    addStatus('✅ Added Kaia Testnet to wallet', 'success');
+                                } catch (addError) {
+                                    addStatus(`❌ Failed to add network: ${addError.message}`, 'error');
+                                }
+                            } else {
+                                addStatus(`❌ Failed to switch network: ${switchError.message}`, 'error');
+                            }
+                        }
+                    } else {
+                        addStatus('✅ Already on Kaia Testnet', 'success');
+                    }
+                }
+            } catch (error) {
+                addStatus(`❌ Wallet connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test connection on load
+        window.onload = () => {
+            addStatus('🎓 Welcome to Liven - Kaia Connection Test', 'info');
+            testConnection();
+        };
+    </script>
+</body>
+</html>
