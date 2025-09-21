@@ -6,8 +6,7 @@ Wiza is a decentralized platform that transforms education by combining on-chain
 
 ## 🔗 Live Deployment
 
-- **Testnet dApp:** [https://wiza-kaia.netlify.app](https://wiza-kaia.netlify.app)
-- **Demo:** [Watch on YouTube](https://wiza-kaia.netlify.app/demo)
+- **Testnet dApp:** [https://wiza.vercel.app](https://wiza-kaia.netlify.app)
 - **Pitch Deck:** [View](https://wiza-kaia.netlify.app/pitch-deck)
 - **Technical Slides:** [View](https://wiza-kaia.netlify.app/docs)
 
@@ -48,7 +47,6 @@ Wiza is a decentralized platform that transforms education by combining on-chain
 - Tracks deposits, withdrawals, and total earnings
 - Only Wiza factory can fund wallets
 
-Contracts are deployed on Kaia Testnet and can be verified on [Kaia Explorer](https://kairos.kaiascope.com).
 
 ---
 
@@ -67,7 +65,7 @@ graph TD
 ## Getting Started (Development)
 
 ```
-git clone https://github.com/devarogundade/wiza.git
+git clone https://github.com/sam-thetutor/wiza.git
 ```
 
 ```
